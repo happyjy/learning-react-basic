@@ -1,0 +1,164 @@
+<!-- 
+  컴포넌트 정의, 실제 DOM에 컴포넌트를 그려준다.
+ -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eg</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      border: 0;
+    }
+
+    #root p {
+      color: white;
+      font-size: 2rem;
+      background-color: orange;
+      text-align: center;
+      width: 200px;
+      margin: 0 auto;
+    }
+
+    #btn_plus {
+      display: block;
+      background-color: brown;
+      border: 2 solid #fff;
+      width: 200px;
+      height: 50px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- <script crossorigin src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script> -->
+  <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+
+  <div id="root"></div>
+  <!-- <button id="btn_plus">+</button> -->
+
+  <!-- # 중요 
+      * 참고: https://babeljs.io/setup#installation
+    -->
+  <script type="text/babel">
+    console.log({ React, ReactDOM });
+    /* 
+      # 1번 요약
+      * React.createElement로 만들 수 있는 컴포넌틑 방법 3가지을 알아보고 (태그 이름 문자열 | 리액트 컴포넌트 | React.Fragment)
+      * 복잡한 component를 만들때 vanilla js로 만드는 경우 코드가 길고 어려운점을 알아 보고 
+        * jsx문법이 왜 필요한지 알아보자 
+          
+      # 2번 요약    
+        * 작성한 코드(JSX)를 vanillia js로 실행할 수 있게 traspiling  해줘야 한다. 
+          * 그게 바로 babel
+          
+      # 현재 요약
+        * function component에 props를 전달해 JSX 문법으로 표기하는 방식
+        * function 컴포넌트(props) { retutn JSX; }
+
+    */
+
+
+    /* 
+      STEP 1. function component: props 전달 예제
+    */
+    // function Component(props) {
+    //   return (
+    //     <div>
+    //       <h1>{props.message} 이것은 함수로 만든 컴포넌트 입니다.</h1>
+    //     </div>
+    //   );
+    // }
+
+    // Component.defaultProps = {
+    //   message: '"DEFAULT PROPS FUNCTION 하이"',
+    // };
+
+    // ReactDOM.render(
+    //   // <Component message="안녕하세요!!!" />,
+    //   <Component />,
+    //   document.querySelector('#root'),
+    // );
+
+    /*
+      STEP 2. class component: props 전달 예제
+        * default props 방법 2가지 
+          * 1. Component.defaultProps로 설정
+          * 2. class안 state property로 설정 
+          * 3. constructor안 state로 설정
+    */
+    class Component extends React.Component {
+      // default props 방법 2
+      // state = {
+      //   count: 0
+      // }
+
+      // default props 방법 3
+      constructor(props) {
+        // [point] React.Component를 상속하고 있기 때문에 필요
+        super(props)
+        this.state = { count: 0 }
+      }
+      render() {
+        return (
+          <div>
+            <h1>
+              {this.props.message} 이것은 클래스를 상속하여 만든 컴포넌트
+              입니다.
+            </h1>
+            <p>{this.state.count}</p>
+          </div>
+        );
+      }
+
+      componentDidMount() {
+        console.log("###");
+        setTimeout(() => {
+          // this.setState({count: this.state.count + 1});
+          this.setState((prevState, prevProps) => {
+            console.log({ prevState, prevProps });
+            // return value: new one
+            return { ...prevState, count: prevState.count + 1 };
+          });
+        }, 1000)
+      }
+    }
+
+
+    // default props 방법 1
+    // Component.defaultProps = {
+    //   message: '"DEFAULT PROPS CLASS 하이"',
+    // };
+
+    ReactDOM.render(
+      // <Component message="안녕하세요!!!" />,
+      <Component />,
+      document.querySelector('#root'),
+    );
+
+
+  </script>
+  <!-- <div>
+  <div>
+    <h1>주제</h1>
+    <ul>
+      <li>FE</li>
+      <li>BD</li>
+    </ul>
+  </div>
+</div> -->
+</body>
+
+</html>

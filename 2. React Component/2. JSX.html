@@ -1,0 +1,205 @@
+<!-- 
+  컴포넌트 정의, 실제 DOM에 컴포넌트를 그려준다.
+ -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eg</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      border: 0;
+    }
+
+    #root p {
+      color: white;
+      font-size: 2rem;
+      background-color: orange;
+      text-align: center;
+      width: 200px;
+      margin: 0 auto;
+    }
+
+    #btn_plus {
+      display: block;
+      background-color: brown;
+      border: 2 solid #fff;
+      width: 200px;
+      height: 50px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- <script crossorigin src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script> -->
+  <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+
+  <div id="root"></div>
+  <!-- <button id="btn_plus">+</button> -->
+
+  <!-- # 중요 
+      * 참고: https://babeljs.io/setup#installation
+    -->
+  <script type="text/babel">
+    console.log({ React, ReactDOM });
+    /* 
+       # 1번 요약
+        * React.createElement로 만들 수 있는 컴포넌틑 방법 3가지을 알아보고 (태그 이름 문자열 | 리액트 컴포넌트 | React.Fragment)
+        * 복잡한 component를 만들때 vanilla js로 만드는 경우 코드가 길고 어려운점을 알아 보고 
+          * jsx문법이 왜 필요한지 알아보자 
+          
+      # 현재 요약    
+        * 작성한 코드(JSX)를 vanillia js로 실행할 수 있게 traspiling  해줘야 한다. 
+          * 그게 바로 babel
+    */
+    // React
+    // ReactDOM.render(
+    //   React.createElement(
+    //     "div",
+    //     null,
+    //     React.createElement(
+    //       "div",
+    //       null,
+    //       React.createElement("h1", null, "주제"),
+    //       React.createElement(
+    //         "ul",
+    //         null,
+    //         React.createElement("li", null, "FE"),
+    //         React.createElement("li", null, "BE"),
+    //       ),
+    //     )
+    //   ),
+    //   document.querySelector("#root")
+    // )
+    /* 
+      # redner함수에 html 태그를 넣었는데도 ReactDom.render에 의해서 render가 됐다. 
+        => 이건 babel이 html 대그를 작성해도 React.createElement형식으로 transpiling해주기 때문이다.
+    */
+
+    ReactDOM.render(
+      <div>
+        <div>
+          <h1>주제1</ h1>
+          <ul>
+            <li>FE</li>
+            <li>BD</li>
+          </ul>
+        </div>
+      </div>,
+      document.querySelector("#root")
+    )
+
+      // // 1. 최상위 요소가 하나여야 합니다.
+      // // 2. 최상위 요소 리턴하는 경우, ( ) 로 감싸야 합니다.
+      //   const Comp1 = props => {
+      //       return (
+      //         <h1>제목</h1>
+      //         <h2>부제목</h2>
+      //       );
+      //   }
+      //   const Comp2 = props => {
+      //     return (
+      //       <div>
+      //         <h1>제목</h1>
+      //         <h2>부제목</h2>
+      //       </div>
+      //     );
+      //   };
+
+      //// 3. 자식들을 바로 랜더링하고 싶으면, <>자식들</> 를 사용합니다. => Fragment
+      //   const Comp3 = props => {
+      //     return (
+      //       <>
+      //         <h1>제목</h1>
+      //         <h2>부제목</h2>
+      //       </>
+      //     );
+      //   };
+
+      //// 4. 자바스크립트 표현식을 사용하려면, {표현식} 를 이용합니다.
+      //   const Comp4 = props => {
+      //     return (
+      //       <div>
+      //         <h1>제목</h1>
+      //         <h2>{props.children}</h2>
+      //       </div>
+      //     );
+      //   };
+
+      //// 5. if 문은 사용할 수 없습니다.
+      // 삼항 연산자 혹은 && 를 사용합니다.
+      //   const Comp5 = props => {
+      //     return (
+      //       <div>
+      //         <h1>제목</h1>
+      //         <h2>{props.children}</h2>
+      //         {props.isShow ? '있다' : '없다.'}
+      //         {props.isShow && '있을 때만 나온다'}
+      //       </div>
+      //     );
+      //   };
+
+      //// 6. style 을 이용해 인라인 스타일링이 가능합니다.
+      //   const Comp6 = props => {
+      //     return (
+      //       <div>
+      //         <h1
+      //           style={{
+      //             color: 'red',
+      //           }}
+      //         >
+      //           제목
+      //         </h1>
+      //         <h2>부제목</h2>
+      //       </div>
+      //     );
+      //   };
+
+      //// 7. class 대신 className 을 사용해 class 를 적용할 수 있습니다.
+      //   const Comp7 = props => {
+      //     return (
+      //       <div>
+      //         <h1 className="title">제목</h1>
+      //         <h2>부제목</h2>
+      //       </div>
+      //     );
+      //   };
+
+      //// 8. 자식요소가 있으면, 꼭 닫아야 하고, 자식요소가 없으면 열면서 닫아야 합니다.
+      // <p>어쩌구</p>
+      // <br />
+      //   const Comp7 = props => {
+      //     return (
+      //       <div>
+      //         <h1 className="title">제목</h1>
+      //         <br />
+      //         <h2>부제목</h2>
+      //       </div>
+      //     );
+      //   };
+
+  </script>
+  <!-- <div>
+  <div>
+    <h1>주제</h1>
+    <ul>
+      <li>FE</li>
+      <li>BD</li>
+    </ul>
+  </div>
+</div> -->
+</body>
+
+</html>

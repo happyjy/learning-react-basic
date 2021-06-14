@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <br>
+  <hr><br>
+  <div id="div1"></div>
+  <div id="div2"></div>
+  <div id="div3"></div>
+  <br>
+  <hr><br>
+  <!-- <button onclick="div1print()">div1에 문자열 출력</button> - -->
+  <!-- <button onclick="div2print()">div2에 html tag 출력</button> - -->
+  <button onclick="div3print()">팀원</button>
+  <script>
+    function div1print() {
+      document.getElementById("div1").innerText = "<b>문자열</b>";  // 무조건 문자열로 처리
+    }
+    function div2print() {
+      document.getElementById("div2").innerHTML = `<form action="/action_page.php">
+            <label for="fname">First name:</label><br>
+            <input type="text" id="fname" name="fname" value="John"><br>
+            <label for="lname">Last name:</label><br>
+            <input type="text" id="lname" name="lname" value="Doe"><br><br>
+            <input type="submit" value="Submit">
+            </form>`;
+      // document.getElementById("div2").innerHTML = "<b>문자열</b>";  // tag형식의 문자열은 tag로 처리
+    }
+    // 1. input값 js로 getValue 하는 방법
+    // 2. https://www.w3schools.com/html/html_form_input_types.asp
+    // 
+    // OnClick="window.location.href='https://github.com/taeyoung0103';"
+    // OnClick="window.location.href='https://github.com/seokminboo';"
+    // OnClick="window.location.href='https://github.com/PARKCHEOLHEE-lab';"
+
+    // const gitUrl = {
+    // https://github.com/taeyoung0103
+    // https://github.com/seokminboo
+    // https://github.com/PARKCHEOLHEE-lab
+    // }
+
+    /* 
+      point1. input값 js로 getValue 하는 방법
+      point2. spread syntax
+      point3. onclick 
+      point4. filter function
+      point5. data-set
+      
+    */
+    function div3print() {
+      //point5 data-set
+      document.getElementById("div3").innerHTML = `
+              <input type="radio" id="pty" name="colleague" data-url="https://github.com/taeyoung0103">
+              <label for="male">박태영</label><br>
+              <input type="radio" id="bsm" name="colleague" data-url="https://github.com/seokminboo">
+              <label for="female">부석민</label><br>
+              <input type="radio" id="pch" name="colleague" data-url="https://github.com/PARKCHEOLHEE-lab">
+              <label for="other">박철희</label><br><br>
+              <button id="git_btn"> Go to GitHub Page </button> `;
+      // <input type="submit" value="Go to GitHub Page">
+      // document.getElementById("div2").innerHTML = "<b>문자열</b>";  // tag형식의 문자열은 tag로 처리
+      // point3 - onclick 
+      document.querySelector("#git_btn").onclick = () => {
+        //point1 - getElementsByName
+        const radioList = document.getElementsByName('colleague');
+        //point2 - [...radioList]
+        //point4 - filter
+        const result = [...radioList].filter(v => {
+          return v.checked;
+        })[0]
+
+        window.location.href = result.dataset.url;
+      }
+    }
+
+    const git_btn_onclick = () => {
+      const radioValue = document.getElementsByClassName("colleague");
+    }
+  </script>
+  <!-- <input type="radio" name="myname" OnClick="window.location.href='action.php?value=1';">1번
+<input type="radio" name="myname" OnClick="window.location.href='action.php?value=2';">2번 -->
+</body>
+
+</html>

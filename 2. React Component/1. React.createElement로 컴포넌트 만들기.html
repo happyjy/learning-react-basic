@@ -1,0 +1,130 @@
+<!-- 
+  컴포넌트 정의, 실제 DOM에 컴포넌트를 그려준다.
+ -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eg</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      border: 0;
+    }
+
+    #root p {
+      color: white;
+      font-size: 2rem;
+      background-color: orange;
+      text-align: center;
+      width: 200px;
+      margin: 0 auto;
+    }
+
+    #btn_plus {
+      display: block;
+      background-color: brown;
+      border: 2 solid #fff;
+      width: 200px;
+      height: 50px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- <script crossorigin src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script> -->
+  <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+
+  <div id="root"></div>
+  <!-- <button id="btn_plus">+</button> -->
+
+
+  <script>
+    console.log({ React, ReactDOM });
+    /* 
+       # 요약
+        * React.createElement로 만들 수 있는 컴포넌틑 방법 3가지을 알아보고 (태그 이름 문자열 | 리액트 컴포넌트 | React.Fragment)
+        * 복잡한 component를 만들때 vanilla js로 만드는 경우 코드가 길고 어려운점을 알아 보고 
+          * jsx문법이 왜 필요한지 알아보자 
+    */
+    // React.createElement(
+    //   type, // 태그 이름 문자열 | 리액트 컴포넌트 | React.Fragment
+    //   [props], // 리액트 컴포넌틑에 넣어주는 데이터 객체
+    //   [...children], //자식으로 넣어주는 요소들
+    // )
+
+    // 1. 태그 이름 문자열 type
+    // React.createElement로 생성되는 dom => <h1>type이 "태그 이름 문자열</h1>
+
+    // ReactDOM.render(
+    //   React.createElement(
+    //     "h1",
+    //     null,
+    //     `type이 "태그 이름 문자열".`,
+    //   ),
+    //   document.querySelector("#root")
+    // )
+
+    // 2. 리액트 컴포넌트 type
+    // const Component = () => {
+    //   return React.createElement("h1", null, `type이 "React function 컴포넌트"`)
+    // }
+    // // React.createElement로 생성되는 dom => <Component><Component/> => <h1>type이 "React function 컴포넌트"</h1>
+    // ReactDOM.render(
+    //   React.createElement(Component, null, null),
+    //   document.querySelector("#root")
+    // )
+
+    // 3. React.Fragment
+    // 항상 outer 태그가 있어야 했는데 React.Fragment를 사용함으로 outer tag없이 render 할 수 있게됐다.
+    // ReactDOM.render(
+    //   React.createElement(React.Fragment, null, `type이 "React Fagment" 입니다.`, `type이 "React Fagment" 입니다.`, `type이 "React Fagment" 입니다.`),
+    //   document.querySelector("#root")
+    // )
+
+    /* 
+      4. 복잡한 리액트 엘리먼트 모임
+      vanilla js로 react dom을 만들려고 하다 보니 코드가 길어졌다. 
+      그래서 => jsx 문법이 탄생!
+    */
+    ReactDOM.render(
+      React.createElement(
+        "div",
+        null,
+        React.createElement(
+          "div",
+          null,
+          React.createElement("h1", null, "주제"),
+          React.createElement(
+            "ul",
+            null,
+            React.createElement("li", null, "FE"),
+            React.createElement("li", null, "BE"),
+          ),
+        )
+      ),
+      document.querySelector("#root")
+    )
+
+  </script>
+  <!-- <div>
+  <div>
+    <h1>주제</h1>
+    <ul>
+      <li>FE</li>
+      <li>BD</li>
+    </ul>
+  </div>
+</div> -->
+</body>
+
+</html>

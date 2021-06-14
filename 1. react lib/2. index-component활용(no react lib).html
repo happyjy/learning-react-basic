@@ -1,0 +1,77 @@
+<!-- 
+  컴포넌트 정의, 실제 DOM에 컴포넌트를 그려준다.
+ -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eg</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      border: 0;
+    }
+
+    #root p {
+      color: white;
+      font-size: 2rem;
+      background-color: orange;
+      text-align: center;
+      width: 200px;
+      margin: 0 auto;
+    }
+
+    #btn_plus {
+      display: block;
+      background-color: brown;
+      border: 2 solid #fff;
+      width: 200px;
+      height: 50px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+
+<body>
+  <script crossorigin src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+
+  <div id="root"></div>
+  <button id="btn_plus">+</button>
+
+
+  <script>
+    const component = {
+      message: 'init',
+      count: 0,
+      render() {
+        return `<p>${this.message}: ${this.count}</p>`
+      }
+    }
+
+    function render(rootElement, component) {
+      rootElement.innerHTML = component.render();
+    }
+
+    // 초기화 
+    render(document.querySelector("#root"), component);
+
+    // click event binding
+    document.querySelector("#btn_plus").onclick = () => {
+      component.message = "update";
+      component.count += 1;
+
+      render(document.querySelector("#root"), component);
+    }
+
+  </script>
+
+</body>
+
+</html>
