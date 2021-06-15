@@ -1,0 +1,120 @@
+<!-- 
+  컴포넌트 정의, 실제 DOM에 컴포넌트를 그려준다.
+ -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eg</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      border: 0;
+    }
+
+    #root {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #root p {
+      color: white;
+      font-size: 2rem;
+      background-color: orange;
+      text-align: center;
+      width: 200px;
+      margin: 0 auto;
+    }
+
+    #btn {
+      display: block;
+      background-color: brown;
+      border: 2 solid #fff;
+      width: 200px;
+      height: 50px;
+      margin: auto auto;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- <script crossorigin src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script> -->
+  <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+
+  <div id="root"></div>
+  <!--
+    # 배울 내용 Component 생성 및 마운트 (< v16.3)
+      * constructor
+      * componentWillMount
+      * render (최초 랜더)
+      * componentDidMount
+   -->
+
+
+  <!-- # 중요 
+      * 참고: https://babeljs.io/setup#installation
+    -->
+  <script type="text/babel">
+    console.log(React);
+    console.log(ReactDOM);
+
+    class App extends React.Component {
+      state = {
+        age: 32
+      }
+
+      constructor(props) {
+        super(props);
+        console.log("# constructor: ", props);
+      }
+
+      render() {
+        // [point] componentDidMount에서 setState될 때 마다 render 함수가 호출된다.
+        console.log("# render - mount 부분");
+
+        return (
+          <div>
+            <h2>
+              Hello {this.props.name} - {this.state.age}
+            </h2>
+          </div>
+        );
+      }
+
+      componentWillMount() {
+        console.log("### componentWillMount");
+      }
+
+      componentDidMount() {
+        console.log("### componentDidMount");
+        // [point] timer, api 요청을 여기서한다.
+
+        setInterval(() => {
+          console.log("setInterval");
+          this.setState(state => ({ ...state, age: state.age + 1 }));
+          // this.setState({
+          //   age: this.state.age + 1,
+          // });
+        }, 1000)
+      }
+    }
+
+    ReactDOM.render(<App name="Yoon" />, document.querySelector("#root"))
+
+  </script>
+</body>
+
+</html>
