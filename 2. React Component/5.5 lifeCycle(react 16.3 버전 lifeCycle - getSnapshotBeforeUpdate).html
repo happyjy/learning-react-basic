@@ -1,0 +1,157 @@
+<!-- 
+  컴포넌트 정의, 실제 DOM에 컴포넌트를 그려준다.
+ -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eg</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      border: 0;
+    }
+
+    #root {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #root p {
+      color: white;
+      font-size: 2rem;
+      background-color: orange;
+      text-align: center;
+      width: 200px;
+      margin: 0 auto;
+    }
+
+    #btn {
+      display: block;
+      background-color: brown;
+      border: 2 solid #fff;
+      width: 200px;
+      height: 50px;
+      margin: auto auto;
+    }
+  </style>
+</head>
+
+<body>
+  <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+
+  <div id="root"></div>
+
+  <!-- 
+      # 16.3 이전 버전 lifecycle(componentWillMount, componentWillReceiveProps, componentWillUpdate)
+        * 변동사항
+          * componentWillMount => getDerivedStateFromProps
+          * componentWillReceiveProps => getDerivedStateFromProps
+          * componentWillUpdate => getSnapshotBeforeUpdate (dom에 적용 직전에 호출)
+
+      # getDerivedStateFromProps
+        * def
+          * return 값은 state으로 변환된다. 
+          * render가 실행되기전에 무조건 수행된다.
+        * 추천 방법
+          * 시간에 따라 변동되는 props에 state가 의존되는 상황에서 사용
+        * derive: 이끌어내다.
+          * derived: 유래, 파생된
+
+      # getSnapshotBeforeUpdate
+        * def
+
+        * 
+    -->
+
+
+  <!-- # 중요 
+      * 참고: https://babeljs.io/setup#installation
+    -->
+  <script type="text/babel">
+    console.log(React);
+    console.log(ReactDOM);
+
+    let i = 0;
+
+    class App extends React.Component {
+      state = { list: [] }
+
+      constructor() {
+        super()
+        console.log("### constructor");
+      }
+
+      /* 
+          # 설명 
+          ```
+            render 
+            getSnapshotBeforeUpdate
+            (dom에 )
+            componentDidUpdate
+          ```
+
+          * [!1], [!2]
+          * getSnapshotBeforeUpdate 함수의 return value는 re-render가 dom에 적용된 후 componentDidUpdate에서 사용가능하다.
+            * getSnapshotBeforeUpdate 함수에서는 아직 re-render가 일어나지 않았기 때문에 상태(props, state)가 re-render 전의 정보를 가공해 
+            * componentDidUpdate 세번째 인자로로 전달 가능하다.
+          * getSnapshotBeforeUpdate에서 snap한 정보는 componentDidUpdate 세번째 인자로로 전달 가능
+      */
+
+      /* [!1] */
+      getSnapshotBeforeUpdate(prevProps, prevState) {
+        console.log("# getSnapshotBeforeUpdate");
+        if (prevState.list.length === this.state.list.length) return null;
+
+        // * react에서 dom에 직접 접근하는것 대신 "useRef"를 사용하는게 좋다. 
+        // * [useRef](https://reactjs.org/docs/hooks-reference.html#useref)
+        const list = document.querySelector("#list");
+        return list.scrollHeight - list.scrollTop;
+      }
+
+      /* [!2] */
+      componentDidUpdate(prevProps, prevState, snapshot) {
+        console.log("# componentDidUpdate");
+        if (snapshot === null) return;
+        const list = document.querySelector("#list");
+        list.scrollTop = list.scrollHeight - snapshot;
+      }
+
+      componentDidMount() {
+        console.log("# componentDidMount");
+        setInterval(() => {
+          this.setState({
+            list: [...this.state.list, i++]
+          })
+        }, 500)
+      }
+
+      render() {
+        return (
+          <div id="list" style={{ border: "1px solid red", width: 100, height: 100, overflow: "scroll" }}>
+            {this.state.list.map((i) => (
+              <div key={i}>{i}</div>
+            ))}
+          </div>
+        );
+      }
+    }
+
+    ReactDOM.render(<App name="Yoon" />, document.querySelector("#root"))
+
+  </script>
+</body>
+
+</html>

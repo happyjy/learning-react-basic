@@ -1,0 +1,190 @@
+<!-- 
+  컴포넌트 정의, 실제 DOM에 컴포넌트를 그려준다.
+ -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eg</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      border: 0;
+    }
+
+    #root {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #root p {
+      color: white;
+      font-size: 2rem;
+      background-color: orange;
+      text-align: center;
+      width: 200px;
+      margin: 0 auto;
+    }
+
+    #btn {
+      display: block;
+      background-color: brown;
+      border: 2 solid #fff;
+      width: 200px;
+      height: 50px;
+      margin: auto auto;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- <script crossorigin src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script> -->
+  <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+
+  <div id="root"></div>
+  <!--
+
+    # Component 생성 및 마운트 (< v16.3)
+      * constructor
+      * componentWillMount
+      * render (최초 랜더)
+      * componentDidMount
+
+
+    # 배울 내용 - Component props, state 변경 (< v16.3)
+      * STEP1. componentWillReceiveProps
+      * STEP2. shouldComponentUpdate
+      * STEP3. componentWillUpdate
+      * STEP4. render
+      * STEP5. componentDidUpdate
+
+    # Component 언마운트 (< v16.3)
+      * componentWillUnmpunt
+   -->
+
+
+  <!-- # 중요 
+      * 참고: https://babeljs.io/setup#installation
+    -->
+  <script type="text/babel">
+    console.log(React);
+    console.log(ReactDOM);
+
+    class App extends React.Component {
+      state = {
+        age: 32
+      }
+
+      constructor(props) {
+        super(props);
+        console.log("# constructor: ", props);
+      }
+
+      /* 
+        STEP4. render
+      */
+      render() {
+        // [point] componentDidMount에서 setState될 때 마다 render 함수가 호출된다.
+        console.log("# render - mount 부분");
+
+        return (
+          <div>
+            <h2>
+              Hello {this.props.name} - {this.state.age}
+            </h2>
+          </div>
+        );
+      }
+
+      componentWillMount() {
+        console.log("### componentWillMount");
+      }
+
+      componentDidMount() {
+        console.log("### componentDidMount");
+        // [point] timer, api 요청을 여기서한다.
+        setInterval(() => {
+          console.log("setInterval");
+          this.setState(state => ({ ...state, age: state.age + 1 }));
+          // this.setState({
+          //   age: this.state.age + 1,
+          // });
+        }, 1000)
+      }
+
+      /* 
+        # STEP1. componentWillReceiveProps
+          * props 를 새로 지정했을 때 바로 호출
+          * [!] state 변경에 반응하지 않음
+            * [!] 여기서 props 의 값에 따라 state를 변경해야 한다면,
+              * setState를 이용해 state를 변경
+              * 그러면 다음 이벤트로 각각 가는것이 아니라 한번에 변경됩니다.
+              * setState를 "shouldComponentUpdate"가 두번 호출 되는게 아니라 
+            
+          * [!]추가 설명
+            * "componentWillReceiveProps"함수에서 props, state변경된 내용이 한번에 동기화 된후 "shouldComponentUpdate"로 전달된다
+              * "shouldComponentUpdate호출에" 대해서 언급한 이유는!
+              * props, state 둘중 하나만 호출 되거나, props & state 둘다 변경 돼도 호출된다.)   
+              * 그래서 props가 호출로 "componentWillReceiveProps" 함수가 호출 되고 
+              * setState로 state를 변경했을 때 "shouldComponentUpdate"가 두번 호출 될거라고 생각할 수 있기 때문이다.
+      */
+      componentWillReceiveProps(nextProps) {
+        console.log("### componentWillReceiveProps > nextProps: ", nextProps);
+      }
+
+      /* 
+        # STEP2. shouldComponentUpdate
+          * props, state 둘중 하나만 변경되어도
+          * props & state 둘다 변경되어도
+          * [!]첫번째, 두번째 인자는 바뀔 props, state가 전달 된다.
+          * return type 이 boolean 입니다.
+            * true 면 render 함수 호출
+            * false 면 render 함수 호출 x
+            * 이 함수를 구현하지 x = > 디폴트: true(항상 render 함수 호출)
+      */
+      shouldComponentUpdate(nextProps, nextState) {
+        console.log("### shouldComponentUpdate > nextProps, nextState: ", { nextProps, nextState });
+
+        // [!] true: render/ false: render x
+        return true;
+        // return false;
+      }
+      /* 
+        # STEP3. componentWillUpdate
+          * 컴포넌트가 재 랜더링 되기 직전에 호출
+          * 여기선 setState 같은 것을 쓰면 안됨
+        
+        # STEP4. render
+      */
+      componentWillUpdate(nextProps, nextState) {
+        console.log("### componentWillUpdate > nextProps, nextState: ", { nextProps, nextState });
+      }
+      /* 
+        # STEP5. componentDidUpdate
+          * 컴포넌트가 재 랜더링을 마치면 호출
+      */
+      componentDidUpdate(prevProps, prevState) {
+        console.log("### componentDidUpdate > prevProps, prevState: ", { prevProps, prevState });
+      }
+
+    }
+
+    ReactDOM.render(<App name="Yoon" />, document.querySelector("#root"))
+
+  </script>
+</body>
+
+</html>
