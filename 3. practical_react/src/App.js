@@ -1,5 +1,7 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+import Controlled from "./components/Controlled/Controlled";
+import Uncontrolled from "./components/1.Controlled&Uncontrolled_Component/Uncontrolled/Uncontrolled";
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
         >
           Learn React
         </a>
+        <Controlled></Controlled>
+        <Uncontrolled></Uncontrolled>
       </header>
     </div>
   );
